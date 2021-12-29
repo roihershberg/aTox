@@ -41,8 +41,8 @@ class ContactProfileFragment : BaseFragment<FragmentContactProfileBinding>(Fragm
             contact.name = contact.name.ifEmpty { getString(R.string.contact_default_name) }
 
             headerMainText.text = contact.name
-            AvatarFactory(contact).assignInto(profileLayout.profileImage)
-            profileLayout.statusIndicator.setColorFilter(colorByContactStatus(requireContext(), contact))
+            AvatarFactory(contact).assignInto(avatarLayout.avatarImage)
+            avatarLayout.statusIndicator.setColorFilter(colorByContactStatus(requireContext(), contact))
 
             contactPublicKey.text = contact.publicKey
             contactName.text = contact.name

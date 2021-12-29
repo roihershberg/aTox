@@ -15,7 +15,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="?attr/homeAsUpIndicator"
             tools:targetApi="21">
-        <include android:id="@+id/profileLayout" layout="@layout/profile_image_layout"/>
+        <include android:id="@+id/avatarImageLayout" layout="@layout/avatar_image_layout"/>
 
         <LinearLayout android:id="@+id/contactHeader"
                 android:layout_width="wrap_content"
