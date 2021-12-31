@@ -12,8 +12,9 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.Typeface
 import android.net.Uri
-import android.widget.ImageView
+import androidx.core.view.doOnLayout
 import kotlin.math.abs
+import kotlin.math.min
 import ltd.evilcorp.atox.R
 import ltd.evilcorp.core.vo.Contact
 
@@ -35,26 +36,23 @@ internal class AvatarFactory(contact: Contact) {
      * then it will be set to the image view, otherwise a new avatar image will be created based
      * on the initials of the name and the public key for the background color.
      */
-    fun assignInto(
-        imageView: ImageView,
-        size: Size = Px(imageView.resources.getDimension(R.dimen.default_avatar_size).toInt())
-    ) =
+    fun assignInto(avatarImageView: AvatarImageView) = avatarImageView.doOnLayout {
         if (avatarUri.isNotEmpty()) {
-            imageView.setImageURI(Uri.parse(avatarUri))
+            avatarImageView.avatarImage.setImageURI(Uri.parse(avatarUri))
         } else {
-            val defaultAvatarSize = imageView.resources.getDimension(R.dimen.default_avatar_size).toInt()
-            val side = size.asPx(imageView.resources).px
-            val textScale = side / defaultAvatarSize
+            val defaultAvatarSize = avatarImageView.resources.getDimension(R.dimen.default_avatar_size).toInt()
+            val size = min(avatarImageView.width, avatarImageView.height)
+            val textScale = size.toFloat() / defaultAvatarSize
 
-            val bitmap = Bitmap.createBitmap(side, side, Bitmap.Config.ARGB_8888)
+            val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmap)
             val rect = RectF(0f, 0f, bitmap.width.toFloat(), bitmap.height.toFloat())
-            val colors = imageView.resources.getIntArray(R.array.contactBackgrounds)
+            val colors = avatarImageView.resources.getIntArray(R.array.contactBackgrounds)
             val backgroundPaint = Paint().apply { color = colors[abs(publicKey.hashCode()).rem(colors.size)] }
 
             val textPaint = Paint().apply {
                 color = Color.WHITE
-                textSize = imageView.resources.getDimension(R.dimen.contact_avatar_placeholder_text) * textScale
+                textSize = avatarImageView.resources.getDimension(R.dimen.contact_avatar_placeholder_text) * textScale
                 textAlign = Paint.Align.CENTER
                 isAntiAlias = true
                 typeface = Typeface.create("sans-serif-light", Typeface.NORMAL)
@@ -65,6 +63,7 @@ internal class AvatarFactory(contact: Contact) {
             textPaint.getTextBounds(initials, 0, initials.length, textBounds)
             canvas.drawRoundRect(rect, rect.bottom, rect.right, backgroundPaint)
             canvas.drawText(initials, rect.centerX(), rect.centerY() - textBounds.exactCenterY(), textPaint)
-            imageView.setImageBitmap(bitmap)
+            avatarImageView.avatarImage.setImageBitmap(bitmap)
         }
+    }
 }

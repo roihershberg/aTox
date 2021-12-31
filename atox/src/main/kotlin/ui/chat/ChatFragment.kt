@@ -189,7 +189,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(FragmentChatBinding::infl
             }.lowercase(Locale.getDefault())
 
             avatarImageView.statusIndicator.setColorFilter(colorByContactStatus(requireContext(), it))
-            AvatarFactory(it).assignInto(avatarImageView.avatarImage)
+            AvatarFactory(it).assignInto(avatarImageView)
 
             if (it.draftMessage.isNotEmpty() && outgoingMessage.text.isEmpty()) {
                 outgoingMessage.setText(it.draftMessage)
