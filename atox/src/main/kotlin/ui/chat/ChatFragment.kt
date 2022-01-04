@@ -188,8 +188,8 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(FragmentChatBinding::infl
                 else -> DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT).format(it.lastMessage)
             }.lowercase(Locale.getDefault())
 
-            avatarImageLayout.statusIndicator.setColorFilter(colorByContactStatus(requireContext(), it))
-            AvatarFactory(it).assignInto(avatarImageLayout.avatarImage)
+            avatarImageView.statusIndicator.setColorFilter(colorByContactStatus(requireContext(), it))
+            AvatarFactory(it).assignInto(avatarImageView.avatarImage)
 
             if (it.draftMessage.isNotEmpty() && outgoingMessage.text.isEmpty()) {
                 outgoingMessage.setText(it.draftMessage)

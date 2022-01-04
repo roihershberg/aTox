@@ -15,7 +15,11 @@
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="?attr/homeAsUpIndicator"
             tools:targetApi="21">
-        <include android:id="@+id/avatarImageLayout" layout="@layout/avatar_image_layout"/>
+
+        <ltd.evilcorp.atox.ui.AvatarImageView
+                android:id="@+id/avatarImageView"
+                android:layout_height="38dp"
+                android:layout_width="38dp" />
 
         <LinearLayout android:id="@+id/contactHeader"
                 android:layout_width="wrap_content"

@@ -134,8 +134,8 @@ class ContactAdapter(
         val publicKey: TextView = row.publicKey
         val statusMessage: TextView = row.statusMessage
         val lastMessage: TextView = row.lastMessage
-        val status: ImageView = row.avatarImageLayout.statusIndicator
-        val image: ImageView = row.avatarImageLayout.avatarImage
+        val status: ImageView = row.avatarImageView.statusIndicator
+        val image: ImageView = row.avatarImageView.avatarImage
         val unreadIndicator: ImageView = row.unreadIndicator
     }
 }
