@@ -16,9 +16,7 @@ import java.text.DateFormat
 import ltd.evilcorp.atox.R
 import ltd.evilcorp.atox.databinding.ContactListViewItemBinding
 import ltd.evilcorp.atox.databinding.FriendRequestItemBinding
-import ltd.evilcorp.atox.ui.AvatarFactory
 import ltd.evilcorp.atox.ui.AvatarImageView
-import ltd.evilcorp.atox.ui.colorByContactStatus
 import ltd.evilcorp.core.vo.Contact
 import ltd.evilcorp.core.vo.FriendRequest
 
@@ -112,8 +110,7 @@ class ContactAdapter(
                             vh.statusMessage.setTextColor(vh.lastMessage.currentTextColor)
                         }
                     }
-                    vh.status.setColorFilter(colorByContactStatus(context, this))
-                    AvatarFactory(this).assignInto(vh.avatarImageView)
+                    vh.avatarImageView.setFrom(this)
                     vh.unreadIndicator.visibility = if (hasUnreadMessages) {
                         View.VISIBLE
                     } else {
@@ -135,7 +132,6 @@ class ContactAdapter(
         val publicKey: TextView = row.publicKey
         val statusMessage: TextView = row.statusMessage
         val lastMessage: TextView = row.lastMessage
-        val status: ImageView = row.avatarImageView.statusIndicator
         val avatarImageView: AvatarImageView = row.avatarImageView
         val unreadIndicator: ImageView = row.unreadIndicator
     }
