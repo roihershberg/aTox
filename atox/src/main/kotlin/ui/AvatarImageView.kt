@@ -61,14 +61,6 @@ class AvatarImageView @JvmOverloads constructor(context: Context, attrs: Attribu
                 }
             }
         }
-        
-        doOnLayout {
-            min(width, height).let { size ->
-                if (size != 0) {
-                    redrawStatusIndicator(size)
-                }
-            }
-        }
     }
 
     fun setFrom(contact: Contact) {
@@ -82,6 +74,8 @@ class AvatarImageView @JvmOverloads constructor(context: Context, attrs: Attribu
 
             if (avatarUri.isNotEmpty()) {
                 avatarImage.setImageURI(Uri.parse(avatarUri))
+                invalidate()
+                requestLayout()
             } else {
                 doOnLayout {
                     min(width, height).let { size ->
@@ -129,14 +123,17 @@ class AvatarImageView @JvmOverloads constructor(context: Context, attrs: Attribu
         requestLayout()
     }
 
-    // override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-    //     super.onSizeChanged(w, h, oldw, oldh)
-    //
-    //     min(w, h).let {
-    //         if (it == 0) return
-    //         else redrawStatusIndicator(it)
-    //     }
-    // }
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+
+        doOnLayout {
+            min(width, height).let { size ->
+                if (size != 0) {
+                    redrawStatusIndicator(size)
+                }
+            }
+        }
+    }
 }
 
 // Class for creating an avatar for contact and assigning it into an ImageView
