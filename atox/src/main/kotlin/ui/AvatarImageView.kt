@@ -74,8 +74,6 @@ class AvatarImageView @JvmOverloads constructor(context: Context, attrs: Attribu
 
             if (avatarUri.isNotEmpty()) {
                 avatarImage.setImageURI(Uri.parse(avatarUri))
-                invalidate()
-                requestLayout()
             } else {
                 doOnLayout {
                     min(width, height).let { size ->
@@ -87,6 +85,9 @@ class AvatarImageView @JvmOverloads constructor(context: Context, attrs: Attribu
                     }
                 }
             }
+
+            invalidate()
+            requestLayout()
         }
     }
 
