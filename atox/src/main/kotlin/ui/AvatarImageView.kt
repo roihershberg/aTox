@@ -69,25 +69,23 @@ class AvatarImageView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     private fun assignInfo() = binding.run {
-        contact?.run {
-            statusIndicator.setColorFilter(colorByContactStatus(context, this))
+        doOnLayout {
+            contact?.run {
+                statusIndicator.setColorFilter(colorByContactStatus(context, this))
 
-            if (avatarUri.isNotEmpty()) {
-                avatarImage.setImageURI(Uri.parse(avatarUri))
-            } else {
-                doOnLayout {
+                if (avatarUri.isNotEmpty()) {
+                    avatarImage.setImageURI(Uri.parse(avatarUri))
+                } else {
                     min(width, height).let { size ->
                         if (size != 0) {
                             avatarImage.setImageBitmap(AvatarFactory.create(resources, name, publicKey, size))
-                            invalidate()
-                            requestLayout()
                         }
                     }
                 }
-            }
 
-            invalidate()
-            requestLayout()
+                invalidate()
+                requestLayout()
+            }
         }
     }
 
