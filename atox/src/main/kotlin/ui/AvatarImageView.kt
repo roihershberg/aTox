@@ -19,6 +19,7 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 import ltd.evilcorp.atox.R
 import ltd.evilcorp.core.vo.Contact
+import ltd.evilcorp.core.vo.UserStatus
 
 private const val STATUS_INDICATOR_SIZE_RATIO_WITH_AVATAR = 12f / 50
 
@@ -26,13 +27,15 @@ class AvatarImageView @JvmOverloads constructor(context: Context, attrs: Attribu
     ShapeableImageView(context, attrs, defStyleAttr) {
 
     @ColorInt
-    private var statusIndicatorColor: Int = 0
+    private var statusIndicatorColor: Int = colorFromStatus(context, UserStatus.None)
     private val statusIndicatorPaint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.FILL
     }
 
-    private var contact: Contact? = null
+    private var name: String = "Preview"
+    private var publicKey: String = ""
+    private var avatarUri: String = ""
 
     var statusIndicatorVisibility: Boolean = true
         set(value) {
@@ -59,7 +62,9 @@ class AvatarImageView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun setFrom(contact: Contact) {
-        this.contact = contact
+        name = contact.name
+        publicKey = contact.publicKey
+        avatarUri = contact.avatarUri
         statusIndicatorColor = colorByContactStatus(context, contact)
         invalidate()
     }
@@ -71,15 +76,13 @@ class AvatarImageView @JvmOverloads constructor(context: Context, attrs: Attribu
             val size = min(canvasWidth, canvasHeight)
             val sizeFloat = size.toFloat()
 
-            contact?.run {
-                if (avatarUri.isNotEmpty()) {
-                    setImageURI(Uri.parse(avatarUri))
-                } else {
-                    setImageBitmap(AvatarFactory.create(resources, name, publicKey, size))
-                }
+            if (avatarUri.isNotEmpty()) {
+                setImageURI(Uri.parse(avatarUri))
+            } else {
+                setImageBitmap(AvatarFactory.create(resources, name, publicKey, size))
             }
 
-            super.onDraw(canvas)
+            super.onDraw(it)
 
             if (statusIndicatorVisibility) {
 
@@ -95,10 +98,11 @@ class AvatarImageView @JvmOverloads constructor(context: Context, attrs: Attribu
                     sqrt(statusIndicatorMarginDiagonal.pow(2) / 2).toInt() // Pythagorean theorem
 
                 val radius = statusIndicatorSize / 2
-                val coordinates = sizeFloat - statusIndicatorMargin - radius
+                val x = canvasWidth - (canvasWidth - sizeFloat) / 2 - statusIndicatorMargin - radius
+                val y = canvasHeight - (canvasHeight - sizeFloat) / 2 - statusIndicatorMargin - radius
 
                 statusIndicatorPaint.color = statusIndicatorColor
-                it.drawCircle(coordinates, coordinates, radius, statusIndicatorPaint)
+                it.drawCircle(x, y, radius, statusIndicatorPaint)
             }
         }
     }
