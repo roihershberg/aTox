@@ -29,12 +29,13 @@
                 android:id="@+id/avatarImageView"
                 android:layout_height="0dp"
                 android:layout_width="0dp"
-                app:statusIndicatorVisibility="false"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintTop_toTopOf="@id/guideline_top"
                 app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
-                app:layout_constraintDimensionRatio="1:1" />
+                app:layout_constraintDimensionRatio="1:1"
+                app:shapeAppearanceOverlay="@style/CircleImageView"
+                app:statusIndicatorVisibility="false" />
 
         <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_end"

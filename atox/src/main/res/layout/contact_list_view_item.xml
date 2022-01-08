@@ -14,7 +14,8 @@
             android:layout_width="38dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleImageView" />
 
     <TextView android:id="@+id/name"
             android:layout_width="wrap_content"

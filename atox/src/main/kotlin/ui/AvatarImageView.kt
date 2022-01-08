@@ -11,125 +11,94 @@ import android.graphics.RectF
 import android.graphics.Typeface
 import android.net.Uri
 import android.util.AttributeSet
-import android.view.LayoutInflater
-import android.widget.FrameLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.doOnLayout
+import androidx.annotation.ColorInt
+import com.google.android.material.imageview.ShapeableImageView
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 import ltd.evilcorp.atox.R
-import ltd.evilcorp.atox.databinding.AvatarImageLayoutBinding
 import ltd.evilcorp.core.vo.Contact
 
 private const val STATUS_INDICATOR_SIZE_RATIO_WITH_AVATAR = 12f / 50
 
 class AvatarImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    FrameLayout(context, attrs, defStyleAttr) {
+    ShapeableImageView(context, attrs, defStyleAttr) {
 
-    private val binding = AvatarImageLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    @ColorInt
+    private var statusIndicatorColor: Int = 0
+    private val statusIndicatorPaint = Paint().apply {
+        isAntiAlias = true
+        style = Paint.Style.FILL
+    }
 
     private var contact: Contact? = null
 
     var statusIndicatorVisibility: Boolean = true
-        set(value) = binding.run {
-            statusIndicator.visibility = when (value) {
-                true -> VISIBLE
-                false -> GONE
-            }
+        set(value) {
             field = value
             invalidate()
-            requestLayout()
         }
 
     init {
-        binding.run {
-            context.theme.obtainStyledAttributes(
-                attrs,
-                R.styleable.AvatarImageView,
-                0, 0
-            ).apply {
-                // Getting attributes from XML
-                try {
-                    statusIndicatorVisibility = getBoolean(
-                        R.styleable.AvatarImageView_statusIndicatorVisibility,
-                        true
-                    )
-                } finally {
-                    recycle()
-                }
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.AvatarImageView,
+            0, 0
+        ).apply {
+            // Getting attributes from XML
+            try {
+                statusIndicatorVisibility = getBoolean(
+                    R.styleable.AvatarImageView_statusIndicatorVisibility,
+                    true
+                )
+            } finally {
+                recycle()
             }
         }
     }
 
     fun setFrom(contact: Contact) {
         this.contact = contact
-        assignInfo()
-    }
-
-    private fun assignInfo() = binding.run {
-        doOnLayout {
-            contact?.run {
-                statusIndicator.setColorFilter(colorByContactStatus(context, this))
-
-                if (avatarUri.isNotEmpty()) {
-                    avatarImage.setImageURI(Uri.parse(avatarUri))
-                } else {
-                    min(width, height).let { size ->
-                        if (size != 0) {
-                            avatarImage.setImageBitmap(AvatarFactory.create(resources, name, publicKey, size))
-                        }
-                    }
-                }
-
-                invalidate()
-                requestLayout()
-            }
-        }
-    }
-
-    private fun redrawStatusIndicator(viewSize: Int) = binding.run {
-        // Calculating status indicator size and margin in relation to the overall size
-        val viewSizeFloat = viewSize.toFloat()
-        val statusIndicatorSize = viewSizeFloat * STATUS_INDICATOR_SIZE_RATIO_WITH_AVATAR
-        val avatarImageRadius = viewSizeFloat / 2
-        val avatarImageDiagonal = sqrt(viewSizeFloat.pow(2) + viewSizeFloat.pow(2)) // Pythagorean theorem
-        val avatarImageDistanceFromCorner = avatarImageDiagonal / 2 - avatarImageRadius
-        val statusIndicatorDiagonal =
-            sqrt(statusIndicatorSize.pow(2) + statusIndicatorSize.pow(2)) // Pythagorean theorem
-        val statusIndicatorMarginDiagonal = (avatarImageDistanceFromCorner - statusIndicatorDiagonal / 2)
-        val statusIndicatorMargin =
-            sqrt(statusIndicatorMarginDiagonal.pow(2) / 2).toInt() // Pythagorean theorem
-
-        statusIndicator.layoutParams = ConstraintLayout.LayoutParams(
-            ConstraintLayout.LayoutParams.WRAP_CONTENT,
-            ConstraintLayout.LayoutParams.WRAP_CONTENT
-        ).apply {
-            bottomToBottom = R.id.parent
-            endToEnd = R.id.parent
-            width = statusIndicatorSize.toInt()
-            height = statusIndicatorSize.toInt()
-            setMargins(
-                statusIndicatorMargin,
-                statusIndicatorMargin,
-                statusIndicatorMargin,
-                statusIndicatorMargin,
-            )
-        }
-
+        statusIndicatorColor = colorByContactStatus(context, contact)
         invalidate()
-        requestLayout()
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
+    override fun onDraw(canvas: Canvas?) {
+        canvas?.let {
+            val canvasWidth = it.width
+            val canvasHeight = it.height
+            val size = min(canvasWidth, canvasHeight)
+            val sizeFloat = size.toFloat()
 
-        doOnLayout {
-            min(width, height).let { size ->
-                if (size != 0) {
-                    redrawStatusIndicator(size)
+            contact?.run {
+                if (avatarUri.isNotEmpty()) {
+                    setImageURI(Uri.parse(avatarUri))
+                } else {
+                    setImageBitmap(AvatarFactory.create(resources, name, publicKey, size))
                 }
+            }
+
+            super.onDraw(canvas)
+
+            if (statusIndicatorVisibility) {
+
+                // Calculating status indicator size and margin in relation to the overall size
+                val statusIndicatorSize = sizeFloat * STATUS_INDICATOR_SIZE_RATIO_WITH_AVATAR
+                val avatarImageRadius = sizeFloat / 2
+                val avatarImageDiagonal = sqrt(sizeFloat.pow(2) + sizeFloat.pow(2)) // Pythagorean theorem
+                val avatarImageDistanceFromCorner = avatarImageDiagonal / 2 - avatarImageRadius
+                val statusIndicatorDiagonal =
+                    sqrt(statusIndicatorSize.pow(2) + statusIndicatorSize.pow(2)) // Pythagorean theorem
+                val statusIndicatorMarginDiagonal = (avatarImageDistanceFromCorner - statusIndicatorDiagonal / 2)
+                val statusIndicatorMargin =
+                    sqrt(statusIndicatorMarginDiagonal.pow(2) / 2).toInt() // Pythagorean theorem
+
+                val radius = statusIndicatorSize / 2
+                val coordinates = sizeFloat - statusIndicatorMargin - radius
+
+                statusIndicatorPaint.color = statusIndicatorColor
+                it.drawCircle(coordinates, coordinates, radius, statusIndicatorPaint)
             }
         }
     }

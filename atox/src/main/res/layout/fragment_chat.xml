@@ -19,7 +19,8 @@
         <ltd.evilcorp.atox.ui.AvatarImageView
                 android:id="@+id/avatarImageView"
                 android:layout_height="38dp"
-                android:layout_width="38dp" />
+                android:layout_width="38dp"
+                app:shapeAppearanceOverlay="@style/CircleImageView" />
 
         <LinearLayout android:id="@+id/contactHeader"
                 android:layout_width="wrap_content"
