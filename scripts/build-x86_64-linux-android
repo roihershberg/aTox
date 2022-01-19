@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 
 TARGET := x86_64-linux-android
+BASE_TARGET := $(TARGET)
 
 include scripts/common.mk
 
