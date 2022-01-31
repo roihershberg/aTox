@@ -39,7 +39,7 @@ tox4j_CONFIGURE		:= -DCMAKE_INSTALL_PREFIX:PATH=$(PREFIX) -DCMAKE_TOOLCHAIN_FILE
 build: $(PREFIX)/tox4j.stamp $(foreach i,jvm-macros jvm-toxcore-api tox4j-c,$(DESTDIR)/$i.stamp)
 
 test: build
-	@echo "No tests for Android builds yo"
+	@echo "No tests for Android builds"
 
 $(NDK_HOME):
 	@echo "Downloading NDK..."
