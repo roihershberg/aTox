@@ -7,6 +7,7 @@ package ltd.evilcorp.atox
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
@@ -14,14 +15,18 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.asLiveData
-import java.util.Timer
+import androidx.lifecycle.lifecycleScope
+import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.schedule
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 import ltd.evilcorp.atox.tox.ToxStarter
 import ltd.evilcorp.core.repository.UserRepository
 import ltd.evilcorp.core.vo.ConnectionStatus
 import ltd.evilcorp.core.vo.User
+import ltd.evilcorp.domain.feature.CallManager
+import ltd.evilcorp.domain.feature.CallState
 import ltd.evilcorp.domain.tox.Tox
 import ltd.evilcorp.domain.tox.ToxSaveStatus
 
@@ -45,6 +50,12 @@ class ToxService : LifecycleService() {
 
     @Inject
     lateinit var userRepository: UserRepository
+
+    @Inject
+    lateinit var callManager: CallManager
+
+    @Inject
+    lateinit var proximityScreenOff: ProximityScreenOff
 
     private fun createNotificationChannel() {
         val channel = NotificationChannelCompat.Builder(channelId, NotificationManagerCompat.IMPORTANCE_LOW)
@@ -107,6 +118,17 @@ class ToxService : LifecycleService() {
                     bootstrapTimer = Timer()
                 }
             }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            lifecycleScope.launch {
+                callManager.inCall.collect {
+                    if (it is CallState.InCall)
+                        proximityScreenOff.acquire()
+                    else
+                        proximityScreenOff.release()
+                }
+            }
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

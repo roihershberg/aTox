@@ -11,6 +11,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import ltd.evilcorp.atox.ProximityScreenOff
 import ltd.evilcorp.atox.ui.NotificationHelper
 import ltd.evilcorp.core.vo.Contact
 import ltd.evilcorp.domain.feature.CallManager
@@ -22,6 +23,7 @@ class CallViewModel @Inject constructor(
     private val callManager: CallManager,
     private val notificationHelper: NotificationHelper,
     private val contactManager: ContactManager,
+    val proximityScreenOff: ProximityScreenOff
 ) : ViewModel() {
     private var publicKey = PublicKey("")
 

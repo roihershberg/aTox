@@ -5,6 +5,7 @@
 package ltd.evilcorp.atox.ui.call
 
 import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -80,6 +81,15 @@ class CallFragment : BaseFragment<FragmentCallBinding>(FragmentCallBinding::infl
         updateSpeakerphoneIcon()
         speakerphone.setOnClickListener {
             vm.speakerphoneOn = !vm.speakerphoneOn
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (vm.speakerphoneOn) {
+                    vm.proximityScreenOff.release()
+                } else {
+                    vm.proximityScreenOff.acquire()
+                }
+            }
+
             updateSpeakerphoneIcon()
         }
 
