@@ -1,11 +1,29 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+<resources xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/app">
+
+    <style name="Theme.aTox.DayNight" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+
+        <item name="toolbarNavigationButtonStyle">@style/Widget.aTox.Toolbar.Button.Navigation</item>
+
+        <item name="android:statusBarColor" tools:targetApi="21">@android:color/background_dark</item>
     </style>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="Theme.aTox.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
+    <style name="Theme.aTox.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
+
+    <style name="Theme.aTox.BlueAppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="toolbarNavigationButtonStyle">@style/Widget.aTox.Toolbar.Button.Navigation.Light</item>
+    </style>
+
+    <style name="Widget.aTox.Toolbar.Button.Navigation" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Widget.aTox.Toolbar.Button.Navigation.Light" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">@android:color/white</item>
+    </style>
 
     <style name="OptionGroup">
         <item name="android:layout_width">match_parent</item>
@@ -36,7 +54,7 @@
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
-    <style name="DialogSlideAnimation" parent="Theme.AppCompat.Dialog">
+    <style name="DialogSlideAnimation" parent="Theme.MaterialComponents.Dialog">
         <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
     </style>
 </resources>

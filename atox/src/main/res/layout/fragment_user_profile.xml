@@ -9,7 +9,7 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:theme="@style/Theme.aTox.BlueAppBarOverlay">
         <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/profile_collapsing_toolbar"
                 android:layout_width="match_parent"
@@ -35,14 +35,15 @@
                     android:id="@+id/profile_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="128dp"
+                    android:theme="@style/ThemeOverlay.MaterialComponents.Light"
                     app:layout_collapseMode="pin"
                     app:navigationIcon="@drawable/ic_back"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+                    app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"/>
             <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_gravity="bottom"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                    app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light">
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -60,15 +61,16 @@
                                 android:layout_marginBottom="6dp"
                                 android:contentDescription="@string/status_indicator"
                                 android:src="@drawable/circle"/>
+
                         <TextView
-                                android:id="@+id/user_name"
-                                style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toEndOf="@id/user_status"
-                                android:singleLine="true"
-                                tools:text="Name goes here"/>
+                            android:id="@+id/user_name"
+                            style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/user_status"
+                            android:singleLine="true"
+                            tools:text="Name goes here" />
                     </RelativeLayout>
                     <TextView
                             android:id="@+id/user_status_message"

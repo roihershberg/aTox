@@ -87,11 +87,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.run {
-        ViewCompat.setOnApplyWindowInsetsListener(view) { v, compat ->
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, compat ->
             val insets = compat.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime())
             toolbar.updatePadding(top = insets.top)
-            v.updatePadding(left = insets.left, right = insets.right)
-            version.updatePadding(bottom = insets.bottom)
+            scrollView.updatePadding(left = insets.left, right = insets.right, bottom = insets.bottom)
             compat
         }
 
