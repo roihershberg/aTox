@@ -6,6 +6,13 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorGray">#555</color>
 
+    <color name="colorNewPrimary">#73a0f4</color>
+    <color name="colorNewSecondary">#73a0f4</color>
+    <color name="colorNewDark">#0053e1</color>
+    <color name="colorWarning">#CE1A50</color>
+
+    <color name="pleasantWhite">#f2f5ed</color>
+
     <color name="statusOffline">@color/colorGray</color>
     <color name="statusBusy">@android:color/holo_red_dark</color>
     <color name="statusAway">@android:color/holo_orange_light</color>

@@ -8,9 +8,27 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="Theme.aTox.DayNight" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorNewPrimary</item>
+        <item name="colorSecondary">@color/colorNewSecondary</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+
+        <item name="toolbarNavigationButtonStyle">@style/Widget.aTox.Toolbar.Button.Navigation</item>
+
+        <item name="android:statusBarColor" tools:targetApi="21">@android:color/background_dark</item>
+    </style>
+    <style name="Theme.aTox.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
+    <style name="Theme.aTox.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
+
+    <style name="Theme.aTox.BlueAppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="toolbarNavigationButtonStyle">@style/Widget.aTox.Toolbar.Button.Navigation.Light</item>
+    </style>
+
+    <style name="Widget.aTox.Toolbar.Button.Navigation" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Widget.aTox.Toolbar.Button.Navigation.Light" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">@android:color/white</item>
     </style>
 
     <style name="OptionGroup">
